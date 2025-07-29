@@ -1,11 +1,212 @@
 const choices = document.querySelectorAll(".box");
+const startButton = document.querySelector(".button-start");
+const playerOneId = document.querySelector("#playerOne");
+const playerTwoId = document.querySelector("#playerTwo");
+const container = document.querySelector(".button-reset-div");
 
 
-choices.forEach((choice) => {
-    choice.addEventListener("click", () => {
-        choice.innerText = "X";
+
+function createPlayer(name){
+    return {
+        name,
+        turn: true,
+        point: 0
+    }
+}
+
+const board = [[0,0,0],
+               [0,0,0],
+               [0,0,0]];
+            
+function inputBoardChoice(row, column, letter){
+    if (board[row][column] === 0){
+        board[row][column] = letter;
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+/*function removingClick(){
+     choices.forEach((choice) => {
+        choice.removeEventListener();
+     })
+}
+*/
+function resetBoard(board){
+    for (let i = 0; i < board.length; i++){
+        for (let j = 0; j < board[i].length;j++){
+            board[i][j] = 0;
+        }
+    }
+     choices.forEach((choice) => {
+        choice.innerText = '';
+     })
+
+}
+
+
+function checkWin(board){
+    if (board[0][0] === "X" && board[0][1] === "X" && board[0][2] === "X"){
+            return true;
+
+        } else if (board[1][0] === "X" && board[1][1] === "X" && board[1][2] === "X"){
+            return true;
+
+        } else if (board[2][0] === "X" && board[2][1] === "X" && board[2][2] === "X"){
+            return true;
+
+        } else if (board[0][0] === "X" && board[1][0] === "X" && board[2][0] === "X"){
+            return true;
+
+        } else if (board[0][1] === "X" && board[1][1] === "X" && board[2][1] === "X"){
+            return true;
+            
+        } else if (board[0][2] === "X" && board[1][2] === "X" && board[2][2] === "X"){
+            return true;
+            
+        } else if (board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X"){
+            return true;
+            
+        } else if (board[0][2] === "X" && board[1][1] === "X" && board[2][0] === "X"){
+            return true;
+            
+        } else if (board[0][0] === "O" && board[0][1] === "O" && board[0][2] === "O"){
+            return true;
+
+        } else if (board[1][0] === "O" && board[1][1] === "O" && board[1][2] === "O"){
+            return true;
+
+        } else if (board[2][0] === "O" && board[2][1] === "O" && board[2][2] === "O"){
+            return true;
+
+        } else if (board[0][0] === "O" && board[1][0] === "O" && board[2][0] === "O"){
+            return true;
+
+        } else if (board[0][1] === "O" && board[1][1] === "O" && board[2][1] === "O"){
+            return true;
+            
+        } else if (board[0][2] === "O" && board[1][2] === "O" && board[2][2] === "O"){
+            return true;
+            
+        } else if (board[0][0] === "O" && board[1][1] === "O" && board[2][2] === "O"){
+            return true;
+            
+        } else if (board[0][2] === "O" && board[1][1] === "O" && board[2][0] === "O"){
+            return true;
+    } else {
+        return false;
+    }
+
+}
+
+startButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    const playerOne = createPlayer(playerOneId.value);
+    const playerTwo = createPlayer(playerTwoId.value);
+    let row
+    let col
+
+    choices.forEach((choice) => {
+    choice.addEventListener("click", (event) => {
+    if (playerOne.turn === true){
+        if (choice.innerText === ''){
+            choice.innerText = "X";
+        }
+        if (event.target.parentNode.classList[0] === "row1"){
+            row = 0;
+        } else if (event.target.parentNode.classList[0] === "row2"){
+            row = 1;
+        } else if (event.target.parentNode.classList[0] === "row3"){
+            row = 2;
+        }
+        if (event.target.classList[1] === "col-one"){
+            col = 0;
+        } else if (event.target.classList[1] === "col-two"){
+            col = 1;
+        } else if (event.target.classList[1] === "col-three"){
+            col = 2;
+        }
+        if (inputBoardChoice(row,col,choice.innerText) === false){
+            playerOne.turn = true;
+        } else {
+            playerOne.turn = false;
+        }
+
+        if (checkWin(board) === true){
+            
+            newDiv = document.createElement("h1");
+            newButton = document.createElement("button");
+            newDiv.innerText = `You Won ${playerOne.name}!`;
+            newButton.innerText = "Restart Game";
+            container.appendChild(newDiv);
+            container.appendChild(newButton);
+
+            newButton.addEventListener("click", () => {
+                resetBoard(board);
+                container.removeChild(newDiv);
+                container.removeChild(newButton);
+                console.log(board)
+            })
+
+            
+        }
+
+    } else {
+        if (choice.innerText === ''){
+            choice.innerText = "O";
+        }
+        if (event.target.parentNode.classList[0] === "row1"){
+            row = 0;
+        } else if (event.target.parentNode.classList[0] === "row2"){
+            row = 1;
+        } else if (event.target.parentNode.classList[0] === "row3"){
+            row = 2;
+        }
+        if (event.target.classList[1] === "col-one"){
+            col = 0;
+        } else if (event.target.classList[1] === "col-two"){
+            col = 1;
+        } else if (event.target.classList[1] === "col-three"){
+            col = 2;
+        }
+        if (inputBoardChoice(row,col,choice.innerText) === false){
+            playerOne.turn = false;
+        } else {
+            choice.innerText = "O";
+            playerOne.turn = true;
+        }
+
+
+        if (checkWin(board) === true){
+
+            newDiv = document.createElement("h1");
+            newButton = document.createElement("button");
+            newDiv.innerText = `You Won ${playerTwo.name}!`;
+            newButton.innerText = "Restart Game";
+            container.appendChild(newDiv);
+            container.appendChild(newButton);
+
+            newButton.addEventListener("click", () => {
+                resetBoard(board);
+                container.removeChild(newDiv);
+                container.removeChild(newButton);
+            })
+            
+        }
+
+    }
+        })
     })
+
+
 })
+
+
+
+
+
 
 
 
@@ -47,65 +248,65 @@ choices.forEach((choice) => {
 
 }
 
-function createPlayer(name, boardObjectArr){
+function createPlayer(name, board){
     return {
         name,
         turn: isPlayerTurn(),
         point: 0,
-        checkWin: checkWin(boardObjectArr)
+        checkWin: checkWin(board)
 
     }
     function isPlayerTurn(){
         return true;
 
     }
-    function checkWin(boardObjectArr){
-        if (boardObjectArr.firstRow[0] === "X" && boardObjectArr.firstRow[1] === "X" && boardObjectArr.firstRow[2] === "X"){
+    function checkWin(board){
+        if (board[0][0] === "X" && board[0][1] === "X" && board[0][2] === "X"){
             return true;
 
-        } else if (boardObjectArr.secondRow[0] === "X" && boardObjectArr.secondRow[1] === "X" && boardObjectArr.secondRow[2] === "X"){
+        } else if (board[1][0] === "X" && board[1][1] === "X" && board[1][2] === "X"){
             return true;
 
-        } else if (boardObjectArr.thirdRow[0] === "X" && boardObjectArr.thirdRow[1] === "X" && boardObjectArr.thirdRow[2] === "X"){
+        } else if (board[2][0] === "X" && board[2][1] === "X" && board[2][2] === "X"){
             return true;
 
-        } else if (boardObjectArr.firstRow[0] === "X" && boardObjectArr.secondRow[0] === "X" && boardObjectArr.thirdRow[0] === "X"){
+        } else if (board[0][0] === "X" && board[1][0] === "X" && board[2][0] === "X"){
             return true;
 
-        } else if (boardObjectArr.firstRow[1] === "X" && boardObjectArr.secondRow[1] === "X" && boardObjectArr.thirdRow[1] === "X"){
+        } else if (board[0][1] === "X" && board[1][1] === "X" && board[2][1] === "X"){
             return true;
             
-        } else if (boardObjectArr.firstRow[2] === "X" && boardObjectArr.secondRow[2] === "X" && boardObjectArr.thirdRow[2] === "X"){
+        } else if (board[0][2] === "X" && board[1][2] === "X" && board[2][2] === "X"){
             return true;
             
-        } else if (boardObjectArr.firstRow[0] === "X" && boardObjectArr.secondRow[1] === "X" && boardObjectArr.thirdRow[2] === "X"){
+        } else if (board[0][0] === "X" && board[1][1] === "X" && board[2][2] === "X"){
             return true;
             
-        } else if (boardObjectArr.firstRow[2] === "X" && boardObjectArr.secondRow[1] === "X" && boardObjectArr.thirdRow[0] === "X"){
+        } else if (board[0][2] === "X" && board[1][1] === "X" && board[2][0] === "X"){
             return true;
             
-        } else if (boardObjectArr.firstRow[0] === "O" && boardObjectArr.firstRow[1] === "O" && boardObjectArr.firstRow[2] === "O"){
+        } else if (board[0][0] === "O" && board[0][1] === "O" && board[0][2] === "O"){
             return true;
 
-        } else if (boardObjectArr.secondRow[0] === "O" && boardObjectArr.secondRow[1] === "O" && boardObjectArr.secondRow[2] === "O"){
+        } else if (board[1][0] === "O" && board[1][1] === "O" && board[1][2] === "O"){
             return true;
 
-        } else if (boardObjectArr.thirdRow[0] === "O" && boardObjectArr.thirdRow[1] === "O" && boardObjectArr.thirdRow[2] === "O"){
+        } else if (board[2][0] === "O" && board[2][1] === "O" && board[2][2] === "O"){
             return true;
 
-        } else if (boardObjectArr.firstRow[0] === "O" && boardObjectArr.secondRow[0] === "O" && boardObjectArr.thirdRow[0] === "O"){
+        } else if (board[0][0] === "O" && board[1][0] === "O" && board[2][0] === "O"){
             return true;
 
-        } else if (boardObjectArr.firstRow[1] === "O" && boardObjectArr.secondRow[1] === "O" && boardObjectArr.thirdRow[1] === "O"){
+        } else if (board[0][1] === "O" && board[1][1] === "O" && board[2][1] === "O"){
             return true;
             
-        } else if (boardObjectArr.firstRow[2] === "O" && boardObjectArr.secondRow[2] === "O" && boardObjectArr.thirdRow[2] === "O"){
+        } else if (board[0][2] === "O" && board[1][2] === "O" && board[2][2] === "O"){
             return true;
             
-        } else if (boardObjectArr.firstRow[0] === "O" && boardObjectArr.secondRow[1] === "O" && boardObjectArr.thirdRow[2] === "O"){
+        } else if (board[0][0] === "O" && board[1][1] === "O" && board[2][2] === "O"){
             return true;
             
-        } else if (boardObjectArr.firstRow[2] === "O" && boardObjectArr.secondRow[1] === "O" && boardObjectArr.thirdRow[0] === "O"){
+        } else if (board[0][2] === "O" && board[1][1] === "O" && board[2][0] === "O"){
             return true;
     } else {
         return false;
@@ -113,9 +314,9 @@ function createPlayer(name, boardObjectArr){
 }
 }
 
-function gameFlow(player1, player2, boardObjectArr){
+function gameFlow(player1, player2, board){
     return {
-        start: gameStart(player1, player2, boardObjectArr)
+        start: gameStart(player1, player2, board)
     }
     function gameStart(p1, p2, boardObjeect) {
         if (p1.turn === true){

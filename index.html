@@ -8,23 +8,42 @@
     <script src="./script.js" defer></script>
 </head>
 <body>
+    <div class="player-container">
+        <form>
+            <div>
+                <label for="playerOne">Player 1:</label>
+                <input type="text" id="playerOne" required>
+            </div>
+            <div>
+                <label for="playerTwo">Player 2:</label>
+                <input type="text" id="playerTwo" required>
+            </div>
+            <div class="button-start-div">
+                <button type="submit" class="button-start">Start Game</button>
+            </div>
+        </form>
+    </div>
     <div class="container">
-        <div>Tic-Tac-Toe</div>
+        <div class="container-title">Tic-Tac-Toe</div>
         <div class="row1">
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
+            <div class="box col-one"></div>
+            <div class="box col-two"></div>
+            <div class="box col-three"></div>
         </div>
         <div class="row2">
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
+            <div class="box col-one"></div>
+            <div class="box col-two"></div>
+            <div class="box col-three"></div>
         </div>
         <div class="row3">
-            <div class="box"></div>
-            <div class="box"></div>
-            <div class="box"></div>
+            <div class="box col-one"></div>
+            <div class="box col-two"></div>
+            <div class="box col-three"></div>
+        </div>
+        <div class="button-reset-div">
+
         </div>
     </div>
-</body>
+   
+    </body>
 </html>
